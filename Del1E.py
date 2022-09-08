@@ -1,9 +1,9 @@
 import numpy as np
 
-consumption = 100 #assumtion
+consumption = 50 #100 engines stacked
 init_mass = 10**5
 speed_boost = 1000
-thrust_force = 3*10**6#Estimated thrust force must be greater than gravitational force
+thrust_force = 3.5*10**6#consumption*velocity
 
 def consumed(thrust_force,consumption,init_mass,speed_boost):
       time = speed_boost*init_mass/thrust_force
@@ -28,4 +28,4 @@ while i*speed_boost <= v_esc:
     init_mass -= C
     total_time += time
     i+=1
-print(f'Mass:{init_mass:.2f}kg, time:{total_time:.2f}min')
+print(f'Remaining mass:{init_mass:.2f}kg, time:{total_time:.2f}min')
