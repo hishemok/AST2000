@@ -37,10 +37,10 @@ p = N*m*n*v
 F = p/t = C*v
 '''
 
-consumption = 0.47
+consumption = 50 #100 engines stacked
 init_mass = 10**5
 speed_boost = 1000
-thrust_force = 3.13*10**3
+thrust_force = 3.5*10**6#consumption*velocity
 
 def consumed(thrust_force,consumption,init_mass,speed_boost):
       time = speed_boost*init_mass/thrust_force
