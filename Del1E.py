@@ -1,9 +1,10 @@
 import numpy as np
 
-consumption = 50 #100 engines stacked
-init_mass = 10**5
+consumption = 1500 #consumption/0.33 (where 0.33 is C by one sheet) engines stacked
+init_mass = 5*10**5
 speed_boost = 1000
-thrust_force = 3.5*10**6#consumption*velocity
+thrust_force = consumption*7800 #init_mass*30#
+print(thrust_force)
 
 def consumed(thrust_force,consumption,init_mass,speed_boost):
       time = speed_boost*init_mass/thrust_force
@@ -12,11 +13,15 @@ def consumed(thrust_force,consumption,init_mass,speed_boost):
       return consumed,time
 
 
-v_esc = 15*10**3 #approx estimated compared to earth
 
-r0 =  9364.77
+
+r0 =  8552.29*10**3
+
+v_esc = 14270.788097398781 #np.sqrt(2*g*planet_mass/r0)
 def gravity(r,init_mass):
-    return np.sqrt(6.67*10**(-11)*init_mass*5.6*10**24/r**2)
+    planet_mass = 1.3056371666590186e+25
+    g = 6.67*10**(-11)
+    return init_mass*g*planet_mass/r**2
 
 
 total_time = 0
@@ -29,3 +34,7 @@ while i*speed_boost <= v_esc:
     total_time += time
     i+=1
 print(f'Remaining mass:{init_mass:.2f}kg, time:{total_time:.2f}min')
+print(i*speed_boost)
+
+
+
