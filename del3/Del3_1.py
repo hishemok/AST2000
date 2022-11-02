@@ -2,7 +2,7 @@
 import numpy as np
 from ast2000tools import constants
 from ast2000tools import utils
-utils.check_for_newer_version()
+#utils.check_for_newer_version()
 
 seed = utils.get_seed('Claudieg')#Claudieg
 
@@ -21,8 +21,8 @@ dA = A/(4*np.pi*r**2)
 F = (rs/r)**2*sigma*T**4
 W = 40/0.12
 Ap = 2*np.pi*(system.radii[0]*10**3)**2
-# print(F*Ap)
-# print(W/F)
+#print(F*Ap)
+print(W/F)
 
 def flux_on_planet(r,R):
     F = (rs/r)**2*sigma*T**4
