@@ -1,5 +1,5 @@
 from ast2000tools import utils
-utils.check_for_newer_version()
+#utils.check_for_newer_version()
 
 from ast2000tools import constants as const
 print('One astronomical unit is defined as', const.AU, 'meters.')

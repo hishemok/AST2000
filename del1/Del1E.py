@@ -1,7 +1,7 @@
 import numpy as np
 
 from ast2000tools import utils
-utils.check_for_newer_version()
+#utils.check_for_newer_version()
 seed = utils.get_seed('Claudieg')
 from ast2000tools import constants
 from ast2000tools import solar_system

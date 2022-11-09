@@ -2,7 +2,7 @@
 import numpy as np
 from tqdm import trange
 from ast2000tools import utils
-utils.check_for_newer_version()
+#utils.check_for_newer_version()
 seed = utils.get_seed('Claudieg')
 from ast2000tools import constants
 from ast2000tools import solar_system
@@ -38,16 +38,17 @@ def launch_from_any_planet(planet_idx,timestep,angle_on_planet):
     r = np.einsum('ijk->jki',planet_trajectories['planet_positions'])[planet_idx]
     planet_x = r[timestep,0]
     planet_y = r[timestep,1]
+
     planet_vx = v[timestep,0]
     planet_vy = v[timestep,1]
 
     # plt.plot(r[:,0],r[:,1])
     # plt.show()
     
-    ##FIND ROCKETS POSITION ON PLANET
+   
     radius = system.radii[planet_idx]*1e3
 
-    ##LAUNCH FROM PLANET
+
     planet_mass = system.masses[planet_idx]*constants.m_sun
 
     #løkka her er for å se om kraften vi generer er nok for å escape planeten
@@ -99,17 +100,17 @@ def launch_from_any_planet(planet_idx,timestep,angle_on_planet):
     mission.launch_rocket(0.001)
     #total_time = 431.441
 
-
+#launch site position of rocket
     rx = planet_x + utils.m_to_AU(r0*np.cos(angle_on_planet))
     ry = planet_y + utils.m_to_AU(r0*np.sin(angle_on_planet))
 
-
+#position of rocket after launch
     x = rx + utils.m_to_AU(rot_v*total_time)*np.cos(np.pi/2-angle_on_planet) + planet_vx*utils.s_to_yr(total_time) 
     y = ry + utils.m_to_AU(rot_v*total_time)*np.sin(np.pi/2-angle_on_planet) + planet_vy*utils.s_to_yr(total_time)
 
 
-    rocket_vel_x = planet_vx + v_esc*np.cos(angle_on_planet+rot_v)
-    rocket_vel_y = planet_vx + v_esc*np.sin(angle_on_planet+rot_v)
+    rocket_vel_x = planet_vx + v_esc*np.cos(angle_on_planet+rot_v*total_time) 
+    rocket_vel_y = planet_vx + v_esc*np.sin(angle_on_planet+rot_v*total_time)
     rocket_vel = np.array([rocket_vel_x,rocket_vel_y])
 
 

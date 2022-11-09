@@ -11,7 +11,7 @@ system = solar_system.SolarSystem(seed)
 sigma = constants.sigma
 T = system.star_temperature
 
-r = utils.AU_to_m(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[0]))
+
 rs = system.star_radius*10**3 #radius star
 R = system.radii[0]*10**3 #radius planets
 
@@ -23,8 +23,8 @@ L = 4*np.pi*rs**2*sigma*T**4 #luminosity L
 
 for planet_idx in range(system.number_of_planets):
     r = utils.AU_to_m(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[planet_idx]))
-    F = A_p * (rs/r)**2*sigma*T**4         #calculates flux received per unit area by planet
-    print(f"The flux received by planet {planet_idx} is: {F}")
+    F = (rs/r)**2*sigma*T**4         #calculates flux received per unit area by planet
+    print(f"The flux received by planet {planet_idx} per unit area is: {F}")
 
     area = 40/(F*0.12)    #calculates the area of the solar panel, 40W, 12 percent efficiency
-    print(f"the minimum area of the solar panel to power the spacecraft at planet {planet_idx} must be {area}")
+    print(f"the minimum area of the solar panel to power the spacecraft at planet {planet_idx} must be {area}m^2")

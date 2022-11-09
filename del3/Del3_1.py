@@ -13,7 +13,7 @@ sigma = constants.sigma
 T = system.star_temperature
 
 r = utils.AU_to_m(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[0]))
-rs = system.star_radius*10**3
+rs = system.star_radius*10**3 #m
 A = 4*np.pi*rs**2
 dA = A/(4*np.pi*r**2)
 
@@ -49,3 +49,20 @@ for planet_idx in range(system.number_of_planets):
 print('')
 for i in habitable:
     print(f'Planet {i} is habitable')
+
+    density = (system.masses[i]*constants.m_sun)/((4/3)*np.pi*(system.radii[i]*10**3)**3) #mass/volume
+    print(f"density of planet {i} is: {density}kg/m^3")
+
+
+print(f"Temperature of sun: {T}")
+print(f"radius of sun: {rs}")
+print(f"Surface area of sun: {A}")
+print(f"luminosity of sun: {A*sigma*T**4}")
+print(f"Surface flux of sun: {sigma*T**4}")
+
+print(f"distance of planet 4 from sun is: {utils.AU_to_km(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[4]))}km")
+print(f"distance of planet 6 from sun is: {utils.AU_to_km(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[6]))}km")
+print(f"distance of planet 0 from sun is: {utils.AU_to_km(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[0]))}km")
+
+print(f"distance of planet 2 from sun is: {utils.AU_to_km(np.linalg.norm(np.einsum('ij->ji',system.initial_positions)[2]))}km")
+print(f"radius 0: {system.radii[0]*10**3} radius 4: {system.radii[4]*10**3} radius 6: {system.radii[6]*10**3} radius 2: {system.radii[2]*10**3}")
