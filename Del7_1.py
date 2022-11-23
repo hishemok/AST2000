@@ -14,7 +14,6 @@ system = solar_system.SolarSystem(seed)
 
 
 
-
 ### ALL DOWN TO NEXT LINE IS PART 5###
 """------------------------------------------------------------------"""
 
@@ -272,7 +271,7 @@ time,pos,vel = landing.orient()
 landing.look_in_direction_of_planet()
 landing.start_video()
 #break and fall until about top of atmosphere
-while np.linalg.norm(pos) -system.radii[6]*1e3 > 150000:
+while np.linalg.norm(pos) -system.radii[6]*1e3 > 100000:
     landing.boost(-vel)
     landing.fall(100)
     time,pos,vel = landing.orient()
@@ -283,8 +282,44 @@ landing.launch_lander(np.array([0,0,0]))
 #calculate area of parachute and deploy immediately
 Parachute_Area = (2*6.67*10**(-11)*lander_mass*system.masses[6]*constants.m_sun)/((system.radii[6]*1e3)**2* system.atmospheric_densities[6]*3**2)#A=2G(m_l)*M/(R^2*rho*Cd*V_safe^2)
 landing.adjust_parachute_area(Parachute_Area)
-#calculate force so its a little bigger than the surface gravitational force
-landing.adjust_landing_thruster(force=(6.67*10**(-11)*system.masses[6]*constants.m_sun/(system.radii[6]*1e3)**2*(mission.lander_mass*1.155)),min_height=500)
+
+from Del6_C import f2 as atmospheric_density
+
+def gravity(r):
+    return (6.67*10**(-11)*system.masses[6]*constants.m_sun*mission.lander_mass)/r**2
+def thrust_force(r):
+    r = np.linalg.norm(r)
+    #terminal velocity
+    v = np.sqrt((6.67*10**(-11)*system.masses[6]*constants.m_sun*mission.lander_mass)/(system.radii[6]*1e3)**2/Parachute_Area*atmospheric_density(r*1e-3-system.radii[6]) )
+    return gravity(r) - 0.5*atmospheric_density(r*1e-3-system.radii[6])*Parachute_Area*(v**2-9)
+
+'''ast2000 gives me slightly different numbers each time i run the code which makes it difficult to
+pick a good min_height for thrust-activation
+So i chose a thrustforce of 700N because the thrust_force function returns values close to 700 each time i run the code
+setting a constant thrustforce which wont change each time i run the code, will make choosing the min_height a lot easier'''
+F_thrust = 700#thrust_force(pos)
+
+landing.adjust_landing_thruster(force=F_thrust,min_height=470)#(6.67*10**(-11)*system.masses[6]*constants.m_sun/(system.radii[6]*1e3)**2*(mission.lander_mass*1.155))
+
 landing.fall(10**5)
 
 landing.finish_video(filename='landing_video1.xml')
+
+'''
+##INIT POS AND VEL PRE LANDER##
+Position: (-982347, 3.714e+06, 0) m
+Velocity: (159.135, -601.65, 0) m/s
+V = 620m/s <- norm(velocity)
+
+Landing thruster properties:
+  Force: 700 N
+  Minimum activation height: 470 m
+Landing engine with thrust 700 N activated at time 814508 s.
+Lander reached the surface at time 814529 s.
+Successfully landed on planet 6 at time 814529 s with velocity 2.80769 m/s. Well done!
+*** Achievement unlocked: Touchdown! ***
+Landing site coordinates recorded:
+  theta = 90 deg
+  phi = 261.878 deg
+'''
+
