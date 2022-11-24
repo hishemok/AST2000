@@ -305,6 +305,13 @@ landing.fall(10**5)
 
 landing.finish_video(filename='landing_video1.xml')
 
+
+print(f"mass of planet: {system.masses[6]*constants.m_sun}")
+print(f"radius: {system.radii[6]}")
+print(f"The area is: {Parachute_Area}")
+print(f"The atmospheric density is: {system.atmospheric_densities[6]}")
+print(f"The period of planet 6: {system.rotational_periods[6]}")
+
 '''
 ##INIT POS AND VEL PRE LANDER##
 Position: (-982347, 3.714e+06, 0) m
