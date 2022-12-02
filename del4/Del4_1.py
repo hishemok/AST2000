@@ -22,7 +22,7 @@ alpha = 70*np.pi/180
 theta_0 = np.pi/2
 phi_0 = 0
 def create_grid(alpha,theta_0,phi_0):
-    #follows given code to create a grid to set rbg colors in.
+    #follows given method to create a grid to set rbg colors in.
     xmin = -2*np.sin(alpha/2)/(1+np.cos(alpha/2))
     xmax = 2*np.sin(alpha/2)/(1+np.cos(alpha/2))
     ymin = -2*np.sin(alpha/2)/(1+np.cos(alpha/2))
