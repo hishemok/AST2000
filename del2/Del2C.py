@@ -1,4 +1,4 @@
-from lib2to3.pgen2.token import RPAR
+#EGEN KODE
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import trange
@@ -15,17 +15,18 @@ system = solar_system.SolarSystem(seed)
 r = np.einsum('ij->ji',system.initial_positions)
 m = system.masses
 
+#FUNCTION CALCULATES GFORCE OF GIVEN PLANET
 def Gforce(r_vec,m_planet):
     r_norm = np.linalg.norm(r_vec)
     m_sun = 0.316341
     G = 4*np.pi**2
     return -G*m_planet*m_sun/r_norm**2
 
-F = np.zeros(7)
+F = np.zeros(7)#F IS LIST OF GFORCE
 for planet in range(system.number_of_planets):
     F[planet] = Gforce(r[planet],m[planet])
 
-F = np.abs(F)
+F = np.abs(F)#MAKE THEM POSITIVE AND FIND GREATEST
 # print(max(F))
 # print(F)
 #størst Fg fra siste planet
@@ -51,7 +52,7 @@ Ep = np.zeros_like(E)
 Ek = np.zeros_like(E)
 
 
-def E_tot(v1,v2,r1,r2):
+def E_tot(v1,v2,r1,r2):#CALCULATES TOTAL ENERGY OF PLANET IN ORBIT
     M = system.star_mass
     m = system.masses[-1]
     m_red= M*m/(M+m)
@@ -63,7 +64,7 @@ def E_tot(v1,v2,r1,r2):
 
 
 
-for i in trange(n-1):
+for i in trange(n-1):# INTEGRATION LOOP 
     r_norm = np.linalg.norm(r[i,1]-r[i,0])
     F = -G*m_sun*m_planet*(r[i,1]-r[i,0])/r_norm**3
 
@@ -94,6 +95,7 @@ plt.plot(Ep,label='Potential')
 plt.plot(Ek+Ep,label='Total')
 plt.xlabel('time')
 plt.ylabel('Energy')
+#PLOT POTENTIAL AND KINETIC AND TOTAL ENERGY
 
 plt.legend()
 plt.show()
