@@ -20,6 +20,8 @@ theta = np.linspace(0,2*np.pi,n)
 
 
 #LIST OF INITAL ORBIT ANGLES
+''' throughout the project i use einsum alot. I mostly just use it to switch the indexing of the arrays and matrixes.
+Thats why i usually never comment on it'''
 f = np.einsum('ij->ji',np.linspace(system.initial_orbital_angles, 2*np.pi + system.initial_orbital_angles))
 
 farger = ['brown','blue','pink','red','yellow','green','black']
