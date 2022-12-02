@@ -1,3 +1,4 @@
+#EGEN KODE
 import numpy as np
 
 from ast2000tools import utils
@@ -12,12 +13,9 @@ planet0_mass = system.masses[0]*constants.m_sun
 
 
 grav_acc = 6.67*10**(-11)*planet0_mass/planet0_radius**2
-print(grav_acc*1e5*3)
-print(grav_acc*1e5*3/150000)
 
-
+#multiplier to create stronger engine
 multiplier = 6
-
 consumption = 20*multiplier#12.07#450
 init_mass = 10**5
 speed_boost = 1000
@@ -32,7 +30,7 @@ def consumed(thrust_force,consumption,init_mass,speed_boost):
 
 
 r0 = planet0_radius
-
+#calculate gravity and escape velocity
 v_esc = np.sqrt(2*6.67*10**(-11)*planet0_mass/r0)
 def gravity(r,init_mass):
     g = 6.67*10**(-11)
@@ -41,11 +39,11 @@ def gravity(r,init_mass):
 
 total_time = 0
 i = 1
-while total_time*speed_boost <= v_esc:
-    Force = thrust_force-gravity(r0,init_mass)
+while total_time*speed_boost <= v_esc:#speed boosts are constants so this checks if velocity is less than v_esc
+    Force = thrust_force-gravity(r0,init_mass)#Total force
     C,time = consumed(Force,consumption,init_mass,speed_boost)
-    r0 = r0 + total_time*speed_boost/i
-    init_mass -= C
+    r0 = r0 + total_time*speed_boost/i #update position
+    init_mass -= C #subtract from mass
     total_time += time
     i += 1
 
@@ -62,6 +60,7 @@ init_mass = 10**5
 speed_boost = 1000
 thrust_force = 150000*multiplier
 
+#find planet init position
 planet_x0 = np.einsum('ij->ji',system.initial_positions)[0][0]
 
 radius =  system.radii[0]*10**3
@@ -69,7 +68,7 @@ position = np.array([utils.m_to_AU(radius)+planet_x0,0])
 mission.set_launch_parameters(thrust_force,consumption,init_mass,total_time,position,0)
 mission.launch_rocket(0.01)
 
-
+#find planet init velocity
 vy0 = utils.AU_pr_yr_to_m_pr_s(np.einsum('ij->ji',system.initial_velocities)[0][1])
 
 rot_v =  np.sqrt(2*np.pi*radius**2/(0.92282999*24*60**2))
