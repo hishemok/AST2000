@@ -17,9 +17,9 @@ v[0] = np.einsum('ij->ji',system.initial_velocities)[0]
 r[0] = np.einsum('ij->ji',system.initial_positions)[0]
 
 dt = 1e-5
-c=0
 star_mass = system.star_mass
 G = 4*np.pi**2
+#planet 0 position integration loop
 for i in range(n-1): 
     r_norm = np.linalg.norm(r[i])
 
@@ -35,7 +35,8 @@ for i in range(n-1):
 
 
 
-def A(v1,v2):
+def A(v1,v2):#function calculates area swept after planet moved
+    #calculates the angles between to position vectors
     unit_v1 = v1/np.linalg.norm(v1)
     unit_v2 = v2/np.linalg.norm(v2)
     dot_product = np.dot(unit_v1, unit_v2)
@@ -49,35 +50,37 @@ ry = r[:,1]
 rx = r[:,0]
 DT = 5
 
-
+#find area swept when rx is greates +- 5 timesteps
 for i in range(n-1):
     if rx[i] == np.max(rx):
         break
 r1 = np.array([r[i-DT,0],r[i-DT,1]])
 r2 = np.array([r[i+DT,0],r[i+DT,1]])
 
-
+#scatter points to check if calculations look right
 plt.scatter(r1[0],r1[1])
 plt.scatter(r2[0],r2[1])
 plt.hlines(r[i,1],0,r[i,0])
 print(A(r1,r2))
 
-
+#mean vel between the two points
 mean_vel_a = np.sum(v[i:i+DT])/DT
 
 
+#find area swept when ry is greates +- 5 timesteps
 for i in range(n-1):
     if ry[i] == np.max(ry):
         break
 r1 = np.array([r[i-DT,0],r[i-DT,1]])
 r2 = np.array([r[i+DT,0],r[i+DT,1]])
 
-
+#scatter points to check if calculations look right
 plt.scatter(r1[0],r1[1])
 plt.scatter(r2[0],r2[1])
 plt.vlines(r[i,0],0,r[i,1])
 print(A(r1,r2))
 
+#mean vel between the two points
 mean_vel_b = np.sum(v[i:i+DT])/DT
 
 print(mean_vel_a)
