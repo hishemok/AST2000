@@ -116,56 +116,22 @@ time, pos, vel = travel.orient()
 
 print('part6')
 
-# def lower_orbit(time,r_vel,r_pos):
-#     timestep = int(time/1e-4)
-#     v6 = planet_velocities[timestep,6]
-#     p6 = planet_positions[6,timestep]
-
-#     n = 10**4
-#     dt = 1e-5
-#     r = np.zeros((n,2))
-#     v = np.zeros_like(r)
-#     #for c in range(6):
-#     c = 2
-#     r[0] = r_pos -p6
-#     v[0] = r_vel - v6
-#     breaks = 0
-
-#     delta_v = v[0]*0.1*c
-
-#     v[0] -= delta_v
-#     for i in range(n-1):
-#         R = r[i]
-#         a = - 4*np.pi**2*system.masses[6]*R/np.linalg.norm(R)**3
-#         v[i+1] = v[i] + a*dt
-#         r[i+1] = r[i] + v[i+1]*dt
-
-#         if np.linalg.norm(r[i+1]) > np.linalg.norm(r[i]) and r[i+1,0]<0 and breaks < 4:
-#             #i*10 because timesteps are 1/10th of whats used in most other places
-#             print(i/10)
-#             breaks += 1
-#             v[i+1] *= 0.85
-
-#     plt.plot(r[:,0],r[:,1],label=c)
-    
-#     planet_radius = utils.m_to_AU(system.radii[6]*1e3)
-#     theta = np.linspace(0,2*np.pi,200)
-#     plt.plot(planet_radius*np.cos(theta),planet_radius*np.sin(theta),label='P6')
-#     plt.legend()
-#     plt.axis('equal')
-#     plt.show()
-
 
 def plot_orbit(time,pos,vel):
     timestep = int(time/1e-4)
+    #planet 6 velocity and position
     v6 = planet_velocities[timestep,6]
     p6 = planet_positions[6,timestep]
+    
     n = 10**3
     dt = 1e-5
     r = np.zeros((n,2))
     v = np.zeros((n,2))
+    #act as if planet is stationary makes plotting a lot cleaner and easier.
+    #we also act as if the planet is in origo.
     r[0] = pos - p6
     v[0] = vel - v6
+    #euler cromer integration of rocket position
     for i in range(n-1):
         R = r[i]
         a = - 4*np.pi**2*system.masses[6]*R/np.linalg.norm(R)**3
@@ -173,6 +139,8 @@ def plot_orbit(time,pos,vel):
         r[i+1] = r[i] + v[i+1]*dt
     planet_radius = utils.m_to_AU(system.radii[6]*1e3)
     theta = np.linspace(0,2*np.pi,200)
+    #plot a full circle with radius equal to planet_radius so we can truly see how far we are from the planet
+    #instead of using scatterplots and guess how far it is to the surface
     plt.plot(planet_radius*np.cos(theta),planet_radius*np.sin(theta),label='P6')
     plt.plot(r[:,0],r[:,1])
     plt.axis('equal')
@@ -280,7 +248,7 @@ def orbit(pos,vel):
     plt.axis('equal')
     plt.show()
 #orbit(position,velocity)
-'''Accordning to pictures taken. after 2*7.5*10**5/1e-2 #or 7.5*10**5/1e-2 if calc was wrong# seconds we are straight above a great landing position'''
+'''Accordning to pictures taken. after 7.5*10**5s if calc was wrong# seconds we are straight above a great landing position'''
 
 
 def rotating_coordinates(curr_coordinates,time_elapsed):
