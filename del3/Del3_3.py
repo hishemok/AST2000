@@ -23,6 +23,9 @@ def gravity(r,init_mass,planet_mass):
         g = 6.67*10**(-11)
         return init_mass*g*planet_mass/r**2
 
+
+''' THIS FUNCTION DID NOT WORK, BUT WE NEVER MANAGED TO FIND OUT WHY.
+TH'''
 def launch_from_any_planet(planet_idx,orbit_angle,angle_on_planet):
 
     ##PLANET POSITION AND VELOCITY IN FULL ORBIT
@@ -35,12 +38,14 @@ def launch_from_any_planet(planet_idx,orbit_angle,angle_on_planet):
     planet_trajectories = np.load('planet_trajectories.npz')
     planet_positions = np.einsum('ijk->jki',planet_trajectories['planet_positions'])
     planet_velocities = np.load('velocities.npy')
- 
+    
+
     angle_to_coordinates = np.array([np.cos(orbit_angle),np.sin(orbit_angle)])
     for i in trange(len(planet_positions[0])):
         r[i] = planet_positions[0,i]
         r_unit = r[i]/np.linalg.norm(r[i])
         tol = 1e-5
+        #FIND WHEN R IS APPROX AT THE WANTED COORDINATES IN RADIANS
         if abs(r_unit[0] - angle_to_coordinates[0]) < tol  and abs(r_unit[1] - angle_to_coordinates[1]) < tol:
             print(r_unit[0], r_unit[1])
             print(angle_to_coordinates[0],angle_to_coordinates[1])
@@ -130,11 +135,12 @@ def launch_from_any_planet(planet_idx,orbit_angle,angle_on_planet):
 
 
 PLANET = 0
-ORBIT_ANGLE = 3.7270690724019775 #3*np.pi/2#3*np.pi/5
-ANGLE_ON_PLANET = 3.708854754602006#3*np.pi/2#3*np.pi/2
+ORBIT_ANGLE = 3.7270690724019775 #IN RADIANS
+ANGLE_ON_PLANET = 3.708854754602006#IN RADIANS
 
 
 rocket_position = launch_from_any_planet(planet_idx=PLANET,orbit_angle=ORBIT_ANGLE,angle_on_planet=ANGLE_ON_PLANET)
+
 
 
 
