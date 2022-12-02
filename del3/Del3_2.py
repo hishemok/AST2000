@@ -1,3 +1,4 @@
+#EGEN KODE
 import numpy as np
 import matplotlib as pyplot
 from ast2000tools import constants
