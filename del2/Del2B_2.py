@@ -1,3 +1,4 @@
+#EGEN KODE
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import trange
@@ -16,6 +17,7 @@ theta = np.linspace(0,2*np.pi,n)
 def R(a,e,aph,f):
     return a*(1-e**2)/(1-e*np.cos(np.pi-aph+f))
 
+#calc keplers method and newtons
 def Kepler_newton(index):
     a = system.semi_major_axes[index]
     e = system.eccentricities[index]
@@ -32,21 +34,9 @@ def Kepler_newton(index):
     return Kepler,Newton
 
 
-for i in range(7):
+for i in range(7):# compare with all planets
     Kepler,Newton = Kepler_newton(i)
-    #print(f'P^2 {Kepler[0]},     Keplers a^3 {Kepler[1]},    Newtons {Newton[1]}')
-
-
-
-
-
-
-
-
-
-
-
-
+    print(f'P^2 {Kepler[0]},     Keplers a^3 {Kepler[1]},    Newtons {Newton[1]}')
 
 n = 2*10**6
 v = np.zeros((n,7,2))
@@ -58,6 +48,8 @@ r[0] = np.einsum('ij->ji',system.initial_positions)
 
 A = system.semi_major_axes
 
+
+''' P list for irbit period. P_ is just to keep track of one orbit '''
 P = np.zeros(7)
 P_ = np.zeros(7)
 
@@ -85,7 +77,7 @@ def leapfrog(v,r,i,dt,yr,P,P_,star_mass):
 
         if P[j] == 0 and P_[j] == 0:
             if r[i+1,j,1] > 0 and r[i,j,1] < 0:
-                P[j] = dt*i
+                P[j] = dt*i#put in time it took
                 P_[j] = 1
         elif P[j] != 0 and P_[j] == 1:
             if r[i+1,j,1] > 0 and r[i,j,1] < 0:
@@ -109,18 +101,3 @@ for planet in range(system.number_of_planets):
     k = A[planet]**3
     n = A[planet]**3/(system.masses[planet]+star_mass)
     print(f'Planet {planet}: P^2= {p:.7f}   K:{k:.7f}    N:{n:.7f}')
-
-
-
-# r[i:] = r[i]
-# for planet_idx in range(system.number_of_planets):
-#     plt.plot(r[:,planet_idx,0],r[:,planet_idx,1],label=f'{planet_idx}')
-
-# # plt.legend()
-# plt.scatter(0,0)
-# plt.show()
-
-
-# 21 år
-# 273187 tidssteg: 273187/21 > 10000
-
