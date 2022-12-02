@@ -38,3 +38,4 @@ dop_shift = [-0.0353227073295147, -0.0277205765307337]
 vx,vy = rocket_velocity(dop_shift[0],dop_shift[1])
 print(vx,vy)
 #[-2.15192058] [2.00342743]
+#what we got out is exactly what we was looking for in the comment above
