@@ -1,35 +1,34 @@
+#EGEN KODE
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import trange
 from numba import njit
-
-n = 10000
-theta = np.linspace(0,2*np.pi,n)
-
-
 from ast2000tools import utils
 utils.check_for_newer_version()
-
-seed = utils.get_seed('Claudieg')#Claudieg
-
+seed = utils.get_seed('Claudieg')
 from ast2000tools import solar_system
 system = solar_system.SolarSystem(seed)
 from ast2000tools import space_mission 
 mission = space_mission.SpaceMission(seed)
+
 Aphelion = system.aphelion_angles
 Omega = system.initial_orbital_angles
 A = system.semi_major_axes
 E = system.eccentricities
+n = 10000
+theta = np.linspace(0,2*np.pi,n)
 
+
+#LIST OF INITAL ORBIT ANGLES
 f = np.einsum('ij->ji',np.linspace(system.initial_orbital_angles, 2*np.pi + system.initial_orbital_angles))
-
 
 farger = ['brown','blue','pink','red','yellow','green','black']
 
-
+#ANALYTIC SOLUTION
 def R(a,e,f):
     return a*(1-e**2)/(1-e*np.cos(f))
 
+#CALCULATE ANALYTIC ORBIT FOR ALL PLANETS
 for planet_idx in range(system.number_of_planets):
     omega = Omega[planet_idx]
     a = A[planet_idx]
@@ -39,7 +38,7 @@ for planet_idx in range(system.number_of_planets):
     y = R(a,e,f[planet_idx])*np.sin(f[planet_idx]+aph)
 
  
-    #plt.plot(x,y,label=f'{planet_idx} a ',color=f'{farger[planet_idx]}')
+    plt.plot(x,y,label=f'{planet_idx} a ',color=f'{farger[planet_idx]}')
 
 
 # plt.scatter(0,0)
@@ -60,9 +59,7 @@ r[0] = np.einsum('ij->ji',system.initial_positions)
 
 yr = 0
 star_mass = system.star_mass
-
-
-
+#INTEGRATION LOOP
 @njit
 def leapfrog(v,r,i,dt,yr,star_mass):
     G = 4*np.pi**2
@@ -78,23 +75,22 @@ def leapfrog(v,r,i,dt,yr,star_mass):
         a =  -G*star_mass*(r[i+1,j]/r_norm**3)
         v[i+1,j] = vi05 + a*dt/2
 
-        if j == 0:
+        if j == 0:#COUNT YEARS OF PLANET 0
             if r[i+1,j,1] > 0 and r[i,j,1] < 0:
                 yr += 1
-        
-
 
     return v,r,yr
 
 
 for i in trange(n-1):
     v,r,yr = leapfrog(v,r,i,dt,yr,star_mass)
-    if yr >= 22:
+    if yr >= 22:#BREAK AFTER 22YEARS
         break
 
 print(yr)
 print(i)        
-r[i:] = r[i]
+r[i:] = r[i]#chop out useless zeros
+
 # for f in range(len(farger)):
 #     plt.plot(r[:,f,0],r[:,f,1],label=f'{f}',color=farger[f])
 
