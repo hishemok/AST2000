@@ -1,4 +1,4 @@
-from lib2to3.pgen2.token import RPAR
+#EGEN KODE
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import trange
