@@ -19,7 +19,10 @@ planet_positions = np.einsum('ijk->kji',planet_trajectories['planet_positions'])
 planet_velocities = np.load('velocities.npy')
 
 
-
+''' this function is not the one we used to pull the most accurate data from.
+This one is more of a test function and a starting simulation to see what we would have to take into consideration.
+The only thing we really used in this file is the hohmann transer angle at the bottom
+The function we chose to use to simulate landing is in Del5_1_2f.py'''
 def rocket_trajectory_2(position,velocity,time):
     dt = 1e-4
     n = int(time/dt)#10**5
