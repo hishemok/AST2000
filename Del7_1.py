@@ -13,8 +13,7 @@ from ast2000tools import solar_system
 system = solar_system.SolarSystem(seed)
 
 
-
-### ALL DOWN TO NEXT LINE IS PART 5###
+''' Down to line 260 to find part 7. The rest of the file is just so i can have the right numbers i get from part 5 and 6.'''
 """------------------------------------------------------------------"""
 
 planet_positions0 = np.einsum('ij->ji',system.initial_positions)
@@ -280,8 +279,9 @@ while np.linalg.norm(pos) -system.radii[6]*1e3 > 100000:
 landing.launch_lander(np.array([0,0,0]))
 
 #calculate area of parachute and deploy immediately
-Parachute_Area = (2*6.67*10**(-11)*lander_mass*system.masses[6]*constants.m_sun)/((system.radii[6]*1e3)**2* system.atmospheric_densities[6]*3**2)#A=2G(m_l)*M/(R^2*rho*Cd*V_safe^2)
+#A=2G(m_l)*M/(R^2*rho*Cd*V_safe^2)
 landing.adjust_parachute_area(Parachute_Area)
+Parachute_Area = (2*6.67*10**(-11)*lander_mass*system.masses[6]*constants.m_sun)/((system.radii[6]*1e3)**2* system.atmospheric_densities[6]*3**2)
 
 from Del6_C import f2 as atmospheric_density
 
