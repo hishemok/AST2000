@@ -1,3 +1,4 @@
+#EGEN KODE
 import numpy as np
 from tqdm import trange
 from numba import njit
@@ -24,6 +25,8 @@ r,v = init_pos_vel(N,L,T)
 def loop(N,L,r,v,dt,counter,velocity): 
     r = r + v*dt
     for j in range(N):
+        #COUNT PARTICLES LEAVING THE BOX
+        #STILL KEEP THEM INSIDE BUT COUNT AS IF IT LEFT
         if r[j,0] <= L/4 and r[j,1] <= L/4 and r[j,2] <= 0:
             counter +=1
             velocity += np.linalg.norm(v[j])
