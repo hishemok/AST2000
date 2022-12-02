@@ -1,3 +1,4 @@
+#EGEN KODE
 import numpy as np
 
 from ast2000tools import utils
