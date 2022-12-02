@@ -11,7 +11,7 @@ from ast2000tools import solar_system
 system = solar_system.SolarSystem(seed)
 from ast2000tools import constants
 
-
+''' MOSTLY THE SAME CODE AS PREVIOUSLY, EXCEPT AT THE BOTTOM'''
 
 r = np.einsum('ij->ji',system.initial_positions)
 m = system.masses
@@ -81,21 +81,21 @@ for i in trange(n-1):
     v[i+1,1] = vi05_p + F*dt/2/m_planet
 
 
-    
 
+#PLOT VELOCITIES
 
 plt.plot(v[:,0,0],v[:,0,1])
 plt.plot(v[:,1,0],v[:,1,1])
 plt.axis('equal')
 plt.show()
-
+#CHOOSE ANGLE AND V_PEC
 angle = np.pi/3
 v_pec = 1e-5
-v_rad = np.einsum('ij->i',(v[:,0]+v_pec)*np.sin(angle))
+v_rad = np.einsum('ij->i',(v[:,0]+v_pec)*np.sin(angle))#CALCULATE RADIAL VELOCITY
 v_max = np.amax(v_rad)
 noise = np.random.normal(0,0.2*v_max,n)#Draw random samples from a normal (Gaussian) distribution.
 
-plt.plot(np.linspace(0,n*dt,n),v_rad+noise,label='v_rad')
+plt.plot(np.linspace(0,n*dt,n),v_rad+noise,label='v_rad')#PLOT RADIAL VELOCITY WITH NOISE
 plt.xlabel('t in yrs')
 plt.ylabel('$v_rad$')
 plt.title('Radial velocity')
