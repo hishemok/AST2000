@@ -25,6 +25,7 @@ k_B = constants.k_B
 
 @njit
 def loop(r,T,rho,i,mu,gamma,m_p,pmass,prad,G):
+    #integrate temperature and density by integrating the analytic solution
     grav = G*pmass/(prad+r[i])**2
     if T[i] > T[0]/2:
         dT_dr = -(gamma-1)/gamma*mu*m_p*grav/k_B
