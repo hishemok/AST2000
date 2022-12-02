@@ -16,17 +16,14 @@ planet_positions0 = np.einsum('ij->ji',system.initial_positions)
 planet_trajectories = np.load('planet_trajectories.npz')
 planet_positions = np.einsum('ijk->kji',planet_trajectories['planet_positions'])[:,2:5]
 
-#mission.measure distances 
+#list of distances we got from ast2000 tools
 distance_list = [1.29816269e-04, 1.33599513e+01, 9.30388861e+00, 3.84511610e+01,1.08823373e+01, 2.19127986e+01, 6.45994960e+00, 6.66324004e+00]
-
-
-
-
 
 
 def find_rocket(time,distances):
     positions = planet_positions[time]
     #assume distance contains information about 3 planets
+    #three distances and planet positions at a given time
     r1 = distances[0]
     r2 = distances[1]
     r3 = distances[2]
@@ -34,7 +31,7 @@ def find_rocket(time,distances):
     x2,y2 = positions[1,0],positions[1,1]
     x3,y3 = positions[2,0],positions[2,1]
 
-    
+    ''' the calculations with variables a,b,..,f are based on how radiotowers use triangulation to find position of a user'''
     a = -2*x1 + 2*x2
     b = -2*y1 + 2*y2
     c = r1**2 - r2**2 - x1**2 + x2**2 - y1**2 + y2**2
@@ -45,8 +42,8 @@ def find_rocket(time,distances):
     x = (c*e-f*b)/(e*a-b*d)
     y = (c*d-a*f)/(b*d-a*e)
 
-    #test
-    
+    #test plot to see if everything looks right
+    #if all is good we will have three circles with the rocket where all three circles cross
     angle = np.linspace(0,2*np.pi,1000)
     plt.plot(x1+np.cos(angle)*r1,y1+np.sin(angle)*r1,label='1')
     plt.plot(x2+np.cos(angle)*r2,y2+np.sin(angle)*r2,label='2')
@@ -61,6 +58,4 @@ def find_rocket(time,distances):
 
 position = find_rocket(15993,distance_list[2:5])
 print(position)
-
-
 
