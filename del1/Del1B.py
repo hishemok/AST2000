@@ -6,7 +6,7 @@ from numba import njit
 #INITIAL VALUES
 N = 10**5
 L = 10**(-6)
-T = 3000
+T = 4000
 n = 1000
 dt = 10**(-12)
 k = 1.38*10**(-23)
